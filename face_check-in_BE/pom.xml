@@ -130,6 +130,16 @@
             <artifactId>spring-boot</artifactId>
             <version>3.4.2</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.arcsoft.face/arcsoft-sdk-face -->
+        <dependency>
+            <groupId>com.arcsoft.face</groupId>
+            <artifactId>arcsoft-sdk-face</artifactId>
+            <version>3.0.0.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/libs/arcsoft-sdk-face-3.0.0.0.jar</systemPath>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -137,6 +147,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <includeSystemScope>true</includeSystemScope>
+                </configuration>
             </plugin>
         </plugins>
     </build>

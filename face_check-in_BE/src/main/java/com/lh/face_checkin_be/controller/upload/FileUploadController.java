@@ -9,8 +9,12 @@ package com.lh.face_checkin_be.controller.upload;
  * @create:2025/2/3-17:27
  * @version:v1.0
  */
+import com.lh.face_checkin_be.pojo.User;
+import com.lh.face_checkin_be.service.impl.utils.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,5 +55,13 @@ public class FileUploadController {
             e.printStackTrace();
             return ResponseEntity.internalServerError().body("Failed to save file: " + e.getMessage());
         }
+    }
+
+    private Integer getStudentId() {
+        UsernamePasswordAuthenticationToken authenticationToken =
+                (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
+        User user = loginUser.getUser();
+        return user.getId();
     }
 }
