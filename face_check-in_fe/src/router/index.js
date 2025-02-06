@@ -2,6 +2,7 @@ import StudentHomeView from '@/views/student/StudentHomeView.vue'
 import UserLoginView from '@/views/user/UserLoginView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store/index'
+import UserRegister from '@/views/user/UserRegister.vue'
 
 const routes = [
   {
@@ -17,6 +18,14 @@ const routes = [
     component: UserLoginView,
     meta: {
       requestAuth: false
+    }
+  },
+  {
+    path: "/user/register/",
+    name: "user_register",
+    component: UserRegister,
+    meta: {
+      requestAuth: false,
     }
   },
   {

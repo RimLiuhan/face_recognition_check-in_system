@@ -6,18 +6,48 @@
             <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarText">
-            <div class="navbar-text ms-auto">
+            <!-- <div class="navbar-text ms-auto">
                 你好: {{ $store.state.user.username }}
-            </div>
+            </div> -->
+            <ul class="navbar-nav ms-auto" v-if="$store.state.user.is_login">
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="javascript:;" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{ $store.state.user.username }}
+            </a>
+            <ul class="dropdown-menu">
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="javascript:;" @click="logout">退出</a></li>
+            </ul>
+            </li>
+            </ul>
+            <ul class="navbar-nav ms-auto" v-else>
+                <li class="nav-item">
+                <router-link class="nav-link" :to="{name: 'user_login'}" role="button">
+                    登录
+                </router-link>
+                </li>
+                <li class="nav-item">
+                <router-link class="nav-link" :to="{name: 'user_register'}" role="button">
+                    注册
+                </router-link>
+                </li>
+            </ul>
             </div>
         </div>
     </nav>
 </template>
 
 <script>
+import { useStore } from 'vuex';
 export default {
     setup() {
-    
+        const store = useStore();
+        const logout = () => {
+            store.dispatch("logout");
+        }
+        return {
+            logout
+        }
     }
 
 }

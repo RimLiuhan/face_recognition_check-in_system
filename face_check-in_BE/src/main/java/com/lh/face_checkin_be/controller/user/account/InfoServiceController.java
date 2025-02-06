@@ -26,4 +26,10 @@ public class InfoServiceController {
     {
         return infoService.getInfo();
     }
+
+    @GetMapping("user/account/checkFaceFeatures/")
+    public Map<String, String> checkFaceFeatures()
+    {
+        return infoService.checkFaceFeatures();
+    }
 }

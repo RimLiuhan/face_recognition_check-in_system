@@ -19,6 +19,13 @@ export default {
         },
         updateToken(state, token) {
             state.token = token;
+        },
+        logout(state) {
+            state.usertype = '';
+            state.id = '';
+            state.username = '';
+            state.token = '';
+            state.is_login = false;
         }
     },
     actions: {

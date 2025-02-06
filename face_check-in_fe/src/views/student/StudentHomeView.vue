@@ -1,8 +1,8 @@
 <template>
   <content-field>
-    学生
     <div class="mb-3">
-      <label for="formFile" class="form-label">选择照片上传</label>
+      <div v-if="!error_message">您还未登记人脸信息, 可选择上传照片或拍照登记</div>
+      <div v-else>您已经登记过人脸信息, 可以重新登记</div>
       <input ref="fileInput" class="form-control" type="file" id="formFile" accept="image/*">
       <button @click="upload" type="button" class="btn btn-primary">上传</button>
     </div>
@@ -20,6 +20,24 @@ export default {
   setup() {
     const store = useStore();
     const fileInput = ref(null);
+    let error_message = ref(false);
+
+    $.ajax({
+      async: false,
+      url: "http://127.0.0.1:3007/user/account/checkFaceFeatures/",
+      type: "get",
+      headers: {
+        Authorization: "Bearer " + store.state.user.token,
+      },
+      success(resp) {
+        error_message.value = resp.error_message === 'true';
+      }, 
+      error(resp) {
+        console.log(resp);
+      }
+    })
+
+    console.log(error_message.value);
 
     const upload = () => {
       if (!fileInput.value || fileInput.value.files.length === 0) {
@@ -51,6 +69,7 @@ export default {
     return {
       fileInput,
       upload,
+      error_message
     };
   }
 };

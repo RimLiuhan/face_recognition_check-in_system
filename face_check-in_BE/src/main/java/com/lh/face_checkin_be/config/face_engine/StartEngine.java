@@ -7,11 +7,9 @@ import com.arcsoft.face.FunctionConfiguration;
 import com.arcsoft.face.enums.DetectMode;
 import com.arcsoft.face.enums.DetectOrient;
 import com.arcsoft.face.enums.ErrorInfo;
-import org.apache.catalina.Engine;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 /**
  * ClassName:StartEngine
@@ -24,10 +22,13 @@ import org.springframework.stereotype.Component;
  */
 @Configuration
 public class StartEngine {
-    public static EngineInfo initEngine() {
-        //从官网获取
-        String appId = "2nnKEYQA8SvxudyyuGajzhEdiNn5BSh4DeAodMCz4DSg";
-        String sdkKey = "FkHZ8iej2PHy1qZjAKxie9fKKuEpHXjMv6j6YYJEhuET";
+    @Value("${face.addId}")
+    private String appId;
+    @Value("${sdkKey}")
+    private String sdkKey;
+    @Bean
+    public EngineInfo engineInfo() {
+        EngineInfo engineInfo = new EngineInfo();
 
         FaceEngine faceEngine = new FaceEngine("F:\\face_recognition_check-in_system\\face_check-in_BE\\src\\main\\resources\\libs\\WIN64");
         //激活引擎
@@ -71,6 +72,8 @@ public class StartEngine {
             System.out.println("初始化引擎成功");
         }
 
-        return new EngineInfo(errorCode, faceEngine);
+        engineInfo.setErrorCode(errorCode);
+        engineInfo.setFaceEngine(faceEngine);
+        return engineInfo;
     }
 }
