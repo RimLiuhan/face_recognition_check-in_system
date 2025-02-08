@@ -49,9 +49,8 @@ public class InfoServiceImpl implements InfoService {
         UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
         User user = loginUser.getUser();
 
-        int id = user.getId();
         QueryWrapper<Students> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("id", id);
+        queryWrapper.eq("username", user.getUsername());
         Students students = studentsMapper.selectOne(queryWrapper);
 
         Map<String, String> map = new HashMap<>();

@@ -7,7 +7,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lh.face_checkin_be.config.face_engine.EngineInfo;
 import com.lh.face_checkin_be.mapper.CoursesMapper;
+import com.lh.face_checkin_be.mapper.StudentsMapper;
 import com.lh.face_checkin_be.pojo.Courses;
+import com.lh.face_checkin_be.pojo.Students;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,6 +31,9 @@ class FaceCheckInBeApplicationTests {
 
     @Autowired
     CoursesMapper coursesMapper;
+
+    @Autowired
+    StudentsMapper studentsMapper;
 
     @Test
     void contextLoads() {
@@ -85,6 +90,14 @@ class FaceCheckInBeApplicationTests {
             System.out.println(ResponseEntity.ok(courses));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Test
+    void test3() {
+        List<Students> list = studentsMapper.selectList(null);
+        for (Students students : list) {
+            System.out.println(students.getUsername());
         }
     }
 }

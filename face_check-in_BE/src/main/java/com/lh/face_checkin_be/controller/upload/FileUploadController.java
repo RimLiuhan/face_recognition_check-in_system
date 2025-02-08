@@ -97,7 +97,9 @@ public class FileUploadController {
                 (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
         User user = loginUser.getUser();
-        return user.getId();
+        QueryWrapper<Students> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", user.getUsername());
+        return studentsMapper.selectOne(queryWrapper).getId();
     }
 
     private String getFaceFeatures(String imagePath) {
