@@ -3,6 +3,8 @@ import UserLoginView from '@/views/user/UserLoginView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store/index'
 import UserRegister from '@/views/user/UserRegister.vue'
+import TeacherHomeView from '@/views/teacher/TeacherHomeView.vue'
+import CameraView from '@/views/teacher/CameraView.vue'
 
 const routes = [
   {
@@ -34,6 +36,22 @@ const routes = [
     component: StudentHomeView,
     meta: {
       requestAuth: true
+    }
+  },
+  {
+    path: "/teacher/",
+    name: 'teacher_index',
+    component: TeacherHomeView,
+    meta: {
+      requestAuth: true
+    }
+  },
+  {
+    path: "/teacher/camera/",
+    name: 'camera',
+    component: CameraView,
+    meta: {
+      requestAuth: true,
     }
   }
 ]

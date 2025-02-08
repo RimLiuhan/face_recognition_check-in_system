@@ -2,10 +2,16 @@ package com.lh.face_checkin_be;
 
 import com.arcsoft.face.*;
 import com.arcsoft.face.toolkit.ImageInfo;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lh.face_checkin_be.config.face_engine.EngineInfo;
+import com.lh.face_checkin_be.mapper.CoursesMapper;
+import com.lh.face_checkin_be.pojo.Courses;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.File;
@@ -20,10 +26,14 @@ class FaceCheckInBeApplicationTests {
     PasswordEncoder passwordEncoder;
     @Autowired
     EngineInfo engineInfo;
+
+    @Autowired
+    CoursesMapper coursesMapper;
+
     @Test
     void contextLoads() {
 //        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        System.out.println(passwordEncoder.encode("admin"));
+        System.out.println(passwordEncoder.encode("123"));
     }
     @Test
     void test() {
@@ -62,5 +72,19 @@ class FaceCheckInBeApplicationTests {
 //        List<AgeInfo> ageInfoList = new ArrayList<AgeInfo>();
 //        errorCode = faceEngine.getAge(ageInfoList);
 //        System.out.println("年龄：" + ageInfoList.get(0).getAge());
+    }
+    @Test
+    void test2() {
+        QueryWrapper<Courses> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("teacher", "野兽先辈");
+        List<Courses> courses = coursesMapper.selectList(queryWrapper);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            System.out.println(objectMapper.writeValueAsString(courses));
+            System.out.println(ResponseEntity.ok(courses));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
 }
