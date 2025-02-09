@@ -17,9 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
 
 import static com.arcsoft.face.toolkit.ImageFactory.getRGBData;
 
@@ -70,17 +68,15 @@ public class CameraPictureServiceImpl implements CameraPictureService {
         return Base64.getEncoder().encodeToString(faceFeature.getFeatureData());
     }
 
-    private String checkFaceFeatures(String faceFeature) {
+    private Map<String, String> checkFaceFeatures(String faceFeature) {
         FaceEngine faceEngine = engineInfo.getFaceEngine();
         // 获取数据库中所有学生的特征值
         List<Students> students = studentsMapper.selectList(null);
         System.out.println(students.size());
         FaceFeature targetFaceFeature = new FaceFeature(Base64.getDecoder().decode(faceFeature));
+        HashMap<String, String> map = new HashMap<>();
 
-        int i = 0;
         for (Students student : students) {
-            i++;
-            System.out.println("i = " + i);
             if (student.getFaceFeatures() == null) continue;
             FaceFeature souceFaceFeature = new FaceFeature(Base64.getDecoder().decode(student.getFaceFeatures()));
             FaceSimilar faceSimilar = new FaceSimilar();
@@ -88,11 +84,14 @@ public class CameraPictureServiceImpl implements CameraPictureService {
             System.out.println(student.getUsername() + "相似度：" + faceSimilar.getScore());
             if (faceSimilar.getScore() > 0.65) {
                 System.out.println("识别成功" + student.getUsername());
-                return student.getUsername();
+                map.put("error_message", "success");
+                map.put("username", student.getUsername());
+                return map;
             }
         }
 
-        return "未识别成功, 请重试";
+        map.put("error_message", "fail");
+        return map;
     }
 
     @Override
@@ -100,7 +99,10 @@ public class CameraPictureServiceImpl implements CameraPictureService {
         image = image.replace("data:image/jpeg;base64,", "");
         base64ToImage(image);
         String faceFeature = getFaceFeatures(outputFilePath);
-
-        return ResponseEntity.ok(checkFaceFeatures(faceFeature));
+        Map<String, String> map = checkFaceFeatures(faceFeature);
+        if (map.get("error_message").equals("success")) {
+            return ResponseEntity.ok(map.get("username"));
+        }
+        return ResponseEntity.status(500).body("未查询到人脸信息,请重试并确保上传过人脸信息");
     }
 }

@@ -21,6 +21,7 @@
         </div>
       </div>
     </content-field>
+    <button type="button" class="btn btn-danger" @click="stopCheckIn">结束签到</button>
   </template>
   
   <script>
@@ -35,7 +36,7 @@
     setup() {
       const video = ref(null); // 视频元素
       const canvas = ref(null); // 画布元素
-      const errorMessage = ref(''); // 错误信息
+      const errorMessage = ref('请人脸正对摄像头'); // 错误信息
       let intervalId = null; // 定时器 ID
       const store = useStore();
       const route = useRoute();
@@ -75,6 +76,7 @@
         const videoElement = video.value;
         const canvasElement = canvas.value;
         const context = canvasElement.getContext('2d');
+        errorMessage.value = '请人脸正对摄像头';
   
         // 设置画布尺寸与视频一致
         canvasElement.width = videoElement.videoWidth;
@@ -102,17 +104,24 @@
           data: JSON.stringify({ image: imageData }),
           success: function (response) {
             console.log('签到成功:', response);
+            errorMessage.value = '签到成功: ' + response;
             currentMessage.value = response;
             notCheckStudents.value = notCheckStudents.value.filter(student => student !== response);
             checkedStudents.value.add(response);
             console.log(checkedStudents.value);
           },
-          error: function (xhr, status, error) {
-            console.error('图像上传失败:', error);
-            if (xhr.responseJSON && xhr.responseJSON.message) {
-              console.error('错误信息:', xhr.responseJSON.message);
-            }
-          },
+
+          // error: function (xhr, status, error) {
+          //   console.error('图像上传失败:', error);
+          //   if (xhr.responseJSON && xhr.responseJSON.message) {
+          //     console.error('错误信息:', xhr.responseJSON.message);
+          //   }
+          // },
+          error(resp) {
+            console.log(resp.responseText);
+            errorMessage.value = resp.responseText;
+          }
+
         });    
       };
   
@@ -120,13 +129,9 @@
       onMounted(() => {
         startCamera();
         getStudentList();
-        var startTime = new Date();
         intervalId = setInterval(function(){
           captureAndSendFrame()
-          if (new Date() - startTime > 4000) {
-            clearInterval(intervalId);
-          }
-        }, 5000); // 每 2 秒截取一帧
+        }, 3000); // 每 3 秒截取一帧
       });
   
       // 组件卸载时停止摄像头和定时器
@@ -138,6 +143,10 @@
           clearInterval(intervalId);
         }
       });
+
+      const stopCheckIn = () => {
+        clearInterval(intervalId);
+      }
   
       return {
         video,
@@ -145,7 +154,8 @@
         errorMessage,
         notCheckStudents,
         checkedStudents,
-        currentMessage
+        currentMessage,
+        stopCheckIn
       };
     },
   };
@@ -162,5 +172,9 @@
   .error {
     color: red;
     font-weight: bold;
+  }
+
+  button {
+    margin-top: 5px;
   }
   </style>
