@@ -44,7 +44,7 @@ public class CameraPictureController {
             return cameraPictureService.checkImage(imageData);
         } catch (Exception e) {
             // 捕获所有异常，返回 500 错误
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("服务器内部错误: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("未检测到人脸, 请重试");
         }
     }
 }

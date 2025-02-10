@@ -47,7 +47,7 @@ public class StartEngine {
 
         //引擎配置
         EngineConfiguration engineConfiguration = new EngineConfiguration();
-        engineConfiguration.setDetectMode(DetectMode.ASF_DETECT_MODE_IMAGE);
+        engineConfiguration.setDetectMode(DetectMode.ASF_DETECT_MODE_VIDEO);
         engineConfiguration.setDetectFaceOrientPriority(DetectOrient.ASF_OP_ALL_OUT);
         engineConfiguration.setDetectFaceMaxNum(10);
         engineConfiguration.setDetectFaceScaleVal(16);

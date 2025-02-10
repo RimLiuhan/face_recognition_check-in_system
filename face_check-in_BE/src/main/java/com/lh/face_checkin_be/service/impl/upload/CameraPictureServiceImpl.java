@@ -18,6 +18,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.arcsoft.face.toolkit.ImageFactory.getRGBData;
 
@@ -37,6 +38,15 @@ public class CameraPictureServiceImpl implements CameraPictureService {
     @Autowired
     private EngineInfo engineInfo;
     private String outputFilePath = "src/main/resources/static/camera.jpg";
+    private List<Students> students;
+
+    public List<String> getStudentsByMajor(String major) {
+        QueryWrapper<Students> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("major", major);
+        students = studentsMapper.selectList(queryWrapper);
+        List<String> studentList = students.stream().map(Students::getUsername).collect(Collectors.toList());
+        return studentList;
+    }
     private void base64ToImage(String base64String) {
         //base64转图片
         try {
@@ -70,8 +80,7 @@ public class CameraPictureServiceImpl implements CameraPictureService {
 
     private Map<String, String> checkFaceFeatures(String faceFeature) {
         FaceEngine faceEngine = engineInfo.getFaceEngine();
-        // 获取数据库中所有学生的特征值
-        List<Students> students = studentsMapper.selectList(null);
+
         System.out.println(students.size());
         FaceFeature targetFaceFeature = new FaceFeature(Base64.getDecoder().decode(faceFeature));
         HashMap<String, String> map = new HashMap<>();

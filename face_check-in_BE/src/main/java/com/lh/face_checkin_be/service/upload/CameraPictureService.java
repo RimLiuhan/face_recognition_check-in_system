@@ -1,6 +1,9 @@
 package com.lh.face_checkin_be.service.upload;
 
+import com.lh.face_checkin_be.pojo.Students;
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 /**
  * ClassName:CameraPictureService
@@ -13,4 +16,5 @@ import org.springframework.http.ResponseEntity;
  */
 public interface CameraPictureService {
     ResponseEntity<?> checkImage(String image);
+    List<String> getStudentsByMajor(String major);
 }
