@@ -180,8 +180,7 @@
   button {
     margin-top: 5px;
   }
-  </style> -->
-
+  </style>-->
 
 
 
@@ -288,6 +287,12 @@
   
         // 如果有检测到人脸
         if (detections.length > 0) {
+          // 将画布内容转换为 Base64 图像数据
+          const imageData = canvasElement.toDataURL('image/jpeg');
+
+          // 发送图像数据到后端
+          sendImageToBackend(imageData)
+
           // 调整检测结果尺寸以匹配画布
           const resizedDetections = faceapi.resizeResults(detections, {
             width: canvasElement.width,
@@ -296,12 +301,7 @@
   
           // 在画布上绘制人脸框
           faceapi.draw.drawDetections(canvasElement, resizedDetections);
-  
-          // 将画布内容转换为 Base64 图像数据
-          const imageData = canvasElement.toDataURL('image/jpeg');
-  
-          // 发送图像数据到后端
-          sendImageToBackend(imageData);
+          
         } else {
           errorMessage.value = '未检测到人脸，请正对摄像头。';
         }

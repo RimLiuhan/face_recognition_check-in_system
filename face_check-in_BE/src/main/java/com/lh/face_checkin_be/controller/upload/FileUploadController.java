@@ -18,6 +18,7 @@ import com.lh.face_checkin_be.config.face_engine.EngineInfo;
 import com.lh.face_checkin_be.mapper.StudentsMapper;
 import com.lh.face_checkin_be.pojo.Students;
 import com.lh.face_checkin_be.pojo.User;
+import com.lh.face_checkin_be.proxy.CurrentUser;
 import com.lh.face_checkin_be.service.impl.utils.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,7 +54,8 @@ public class FileUploadController {
     StudentsMapper studentsMapper;
 
     @PostMapping("/upload/")
-    public ResponseEntity<String> handleFileUpload(@RequestParam("photo") MultipartFile file) {
+    @CurrentUser
+    public ResponseEntity<String> handleFileUpload(@RequestParam("photo") MultipartFile file, User user) {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("No file uploaded");
         }
@@ -70,7 +72,7 @@ public class FileUploadController {
             Path path = Paths.get(uploadDir + file.getOriginalFilename());
             Files.write(path, bytes);
 
-            int studentId = getStudentId();
+            int studentId = getStudentId(user);
             System.out.println("studentId: " + studentId);
             String faceFeatures = getFaceFeatures(path.toString());
             // 查找students表, 对应ID更新face_features字段
@@ -92,11 +94,7 @@ public class FileUploadController {
 
     }
 
-    private Integer getStudentId() {
-        UsernamePasswordAuthenticationToken authenticationToken =
-                (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
-        User user = loginUser.getUser();
+    private Integer getStudentId(User user) {
         QueryWrapper<Students> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", user.getUsername());
         return studentsMapper.selectOne(queryWrapper).getId();

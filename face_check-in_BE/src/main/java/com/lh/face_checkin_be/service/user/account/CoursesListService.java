@@ -1,7 +1,7 @@
 package com.lh.face_checkin_be.service.user.account;
 
 import com.lh.face_checkin_be.pojo.Courses;
-import org.springframework.http.ResponseEntity;
+import com.lh.face_checkin_be.pojo.User;
 
 import java.util.List;
 
@@ -15,5 +15,5 @@ import java.util.List;
  * @version:v1.0
  */
 public interface CoursesListService {
-    public List<Courses> getCoursesList();
+    public List<Courses> getCoursesList(User user);
 }

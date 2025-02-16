@@ -1,6 +1,8 @@
 package com.lh.face_checkin_be.controller.user.account;
 
 import com.lh.face_checkin_be.pojo.Courses;
+import com.lh.face_checkin_be.pojo.User;
+import com.lh.face_checkin_be.proxy.CurrentUser;
 import com.lh.face_checkin_be.service.user.account.CoursesListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +27,9 @@ public class CoursesListController {
     private CoursesListService coursesListService;
 
     @GetMapping("teacher/courselist/")
-    public List<Courses> getCoursesList()
+    @CurrentUser
+    public List<Courses> getCoursesList(User user)
     {
-        return coursesListService.getCoursesList();
+        return coursesListService.getCoursesList(user);
     }
 }

@@ -1,5 +1,7 @@
 package com.lh.face_checkin_be.service.user.account;
 
+import com.lh.face_checkin_be.pojo.User;
+
 import java.util.Map;
 
 /**
@@ -12,6 +14,6 @@ import java.util.Map;
  * @version:v1.0
  */
 public interface InfoService {
-    public Map<String, String> getInfo();
-    Map<String, String> checkFaceFeatures();
+    public Map<String, String> getInfo(User user);
+    Map<String, String> checkFaceFeatures(User user);
 }

@@ -28,12 +28,7 @@ public class InfoServiceImpl implements InfoService {
     @Autowired
     private StudentsMapper studentsMapper;
     @Override
-    public Map<String, String> getInfo() {
-        UsernamePasswordAuthenticationToken authenticationToken =
-                (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
-        User user = loginUser.getUser();
-
+    public Map<String, String> getInfo(User user) {
         Map<String, String> map = new HashMap<>();
         map.put("error_message", "success");
         map.put("id", user.getId().toString());
@@ -43,12 +38,7 @@ public class InfoServiceImpl implements InfoService {
     }
 
     @Override
-    public Map<String, String> checkFaceFeatures() {
-        UsernamePasswordAuthenticationToken authenticationToken =
-                (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
-        User user = loginUser.getUser();
-
+    public Map<String, String> checkFaceFeatures(User user) {
         QueryWrapper<Students> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", user.getUsername());
         Students students = studentsMapper.selectOne(queryWrapper);

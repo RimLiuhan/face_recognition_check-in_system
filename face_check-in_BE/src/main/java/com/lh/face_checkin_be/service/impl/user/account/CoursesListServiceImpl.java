@@ -31,12 +31,7 @@ public class CoursesListServiceImpl implements CoursesListService {
     private CoursesMapper coursesMapper;
 
     @Override
-    public List<Courses> getCoursesList() {
-        UsernamePasswordAuthenticationToken authenticationToken =
-                (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
-        User user = loginUser.getUser();
-        
+    public List<Courses> getCoursesList(User user) {
         String username = user.getUsername();
         QueryWrapper<Courses> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("teacher", username);
