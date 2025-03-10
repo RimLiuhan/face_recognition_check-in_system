@@ -30,7 +30,7 @@ public class CurrentUserAspect {
         UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
         User user = loginUser.getUser();
 
-        // 将 User 对象作为参数传递给目标方法
+        // 目标方法传来的参数中如果有 User 类型的参数，则替换为当前用户
         Object[] args = joinPoint.getArgs();
         for (int i = 0; i < args.length; i++) {
             if (args[i] instanceof User) {
