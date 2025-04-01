@@ -347,7 +347,7 @@
         getStudentList();
         intervalId = setInterval(function () {
           captureAndSendFrame();
-        }, 3000); // 每 3 秒截取一帧
+        }, 2000); // 每 3 秒截取一帧
       });
   
       // 组件卸载时停止摄像头和定时器
