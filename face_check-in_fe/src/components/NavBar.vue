@@ -15,7 +15,8 @@
                 {{ $store.state.user.username }}
             </a>
             <ul class="dropdown-menu">
-                <li><hr class="dropdown-divider"></li>
+                <!-- <li><hr class="dropdown-divider"></li> -->
+                <li v-if="$store.state.user.usertype == 2"><router-link :to="{name: 'add_new_course', params: {username: $store.state.user.usertype}}">新建课程</router-link></li>
                 <li><a class="dropdown-item" href="javascript:;" @click="logout">退出</a></li>
             </ul>
             </li>

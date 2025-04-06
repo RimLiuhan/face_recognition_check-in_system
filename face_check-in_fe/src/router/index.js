@@ -5,6 +5,7 @@ import store from '@/store/index'
 import UserRegister from '@/views/user/UserRegister.vue'
 import TeacherHomeView from '@/views/teacher/TeacherHomeView.vue'
 import CameraView from '@/views/teacher/CameraView.vue'
+import AddNewCourse from '@/views/teacher/AddNewCourse.vue'
 
 const routes = [
   {
@@ -52,6 +53,14 @@ const routes = [
     component: CameraView,
     meta: {
       requestAuth: true,
+    }
+  },
+  {
+    path: "/teacher/:username/",
+    name: 'add_new_course',
+    component: AddNewCourse,
+    meta: {
+      // requestAuth: true,
     }
   }
 ]

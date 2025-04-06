@@ -27,8 +27,7 @@ import java.util.Map;
 public class RegisterServiceImpl implements RegisterService {
     @Autowired
     private UserMapper userMapper;
-    @Autowired
-    private StudentsMapper studentsMapper;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -72,8 +71,7 @@ public class RegisterServiceImpl implements RegisterService {
         }
 
         String encodedPassword = passwordEncoder.encode(password);
-        User user = new User(null, username, encodedPassword, 1);
-        studentsMapper.insert(new Students(null, username, "计科B212", encodedPassword, null));
+        User user = new User(null, username, encodedPassword, 2);
         userMapper.insert(user);
 
         map.put("error_message", "success");

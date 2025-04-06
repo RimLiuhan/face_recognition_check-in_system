@@ -1,8 +1,6 @@
 package com.lh.face_checkin_be.config.face_engine;
 
 import com.arcsoft.face.FaceEngine;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 /**
  * ClassName:EngineInfo
