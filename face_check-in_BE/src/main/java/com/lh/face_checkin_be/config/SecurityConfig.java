@@ -1,6 +1,7 @@
 package com.lh.face_checkin_be.config;
 
 import com.lh.face_checkin_be.config.filter.JwtAuthenticationTokenFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -8,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -47,9 +49,10 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+    public AuthenticationManager authManager(HttpSecurity http, TypeBasedAuthenticationProvider typeBasedAuthenticationProvider) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder =
                 http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.authenticationProvider(typeBasedAuthenticationProvider);
         return authenticationManagerBuilder.build();
     }
 
@@ -57,4 +60,5 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers("/websocket/**");
     }
+
 }

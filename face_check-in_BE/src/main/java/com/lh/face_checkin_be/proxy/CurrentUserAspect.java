@@ -29,6 +29,7 @@ public class CurrentUserAspect {
                 (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl loginUser = (UserDetailsImpl) authenticationToken.getPrincipal();
         User user = loginUser.getUser();
+        System.out.println(user.toString());
 
         // 目标方法传来的参数中如果有 User 类型的参数，则替换为当前用户
         Object[] args = joinPoint.getArgs();

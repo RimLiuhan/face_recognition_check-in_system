@@ -28,7 +28,9 @@ public class LoginController {
         Integer usertype = Integer.parseInt(map.get("usertype"));
         String username = map.get("username");
         String password = map.get("password");
+        String id = map.get("id");
+        System.out.println(usertype+" "+username+" "+password+" "+id);
 
-        return loginService.getToken(usertype, username, password);
+        return loginService.getToken(usertype, username, password, id);
     }
 }

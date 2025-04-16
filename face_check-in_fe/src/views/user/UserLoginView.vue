@@ -13,6 +13,10 @@
                         <label for="username" class="form-label">用户名</label>
                         <input v-model="username" type="text" class="form-control" id="username" placeholder="请输入用户名">
                     </div>
+                    <div class="mb-3" v-if="usertype == 1">
+                        <label for="sid" class="form-label">学号</label>
+                        <input v-model="sid" type="text" class="form-control" id="sid" placeholder="请输入学号">
+                    </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">密码</label>
                         <input v-model="password" type="password" class="form-control" id="password" placeholder="请输入密码">
@@ -41,6 +45,7 @@ export default {
         let password = ref('');
         let error_message = ref('');
         let usertype = ref('');
+        let sid = ref('');
 
         const login = () => {
             error_message.value = '';
@@ -48,6 +53,7 @@ export default {
                 usertype: usertype.value,
                 username: username.value,
                 password: password.value,
+                id: sid.value,
                 success() {
                     store.dispatch('getinfo', {
                         success() {
@@ -68,6 +74,7 @@ export default {
         return {
             username,
             password,
+            sid,
             error_message,
             usertype,
             login

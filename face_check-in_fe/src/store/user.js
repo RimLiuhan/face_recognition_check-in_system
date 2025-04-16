@@ -37,6 +37,7 @@ export default {
                   usertype: data.usertype,  
                   username: data.username,
                   password: data.password,
+                  id: data.id
                 },
                 success(resp) {
                     if (resp.error_message === 'success') {

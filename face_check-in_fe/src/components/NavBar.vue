@@ -29,7 +29,7 @@
                 </li>
                 <li class="nav-item">
                 <router-link class="nav-link" :to="{name: 'user_register'}" role="button">
-                    注册
+                    教师注册
                 </router-link>
                 </li>
             </ul>

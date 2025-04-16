@@ -1,15 +1,19 @@
 <template>
     <content-field>
         新建课程
-        <div class="row justify-content-md-center">
+        <div class="row justify-content-md-center" style="margin-top: 10px;">
         <div class="col-3">
             <form @submit.prevent="handleSubmit">
                 <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">课程名称</label>
+                    <label class="form-label">学校名称</label>
+                    <input v-model="form.schoolName" type="text" class="form-control" id="school_name">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">课程名称</label>
                     <input v-model="form.courseName" type="text" class="form-control" id="course_name">
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">班级名称</label>
+                    <label class="form-label">班级名称</label>
                     <input v-model="form.className"  type="text" class="form-control" id="class_name">
                 </div>
                 <div class="mb-3 form-check">
@@ -36,6 +40,7 @@ export default {
     setup() {
         const store = useStore();
         const form = ref({
+            schoolName: '',
             courseName: '',
             className: ''
         })
@@ -51,6 +56,7 @@ export default {
                 return;
             }
             const formData = new FormData();
+            formData.append('schoolName', form.value.schoolName);
             formData.append('courseName', form.value.courseName);
             formData.append('className', form.value.className);
             formData.append('teacherId', store.state.user.id);

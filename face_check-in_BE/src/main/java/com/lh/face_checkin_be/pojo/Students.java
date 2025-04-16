@@ -22,6 +22,7 @@ public class Students {
     @TableId(value = "id", type = IdType.AUTO)
     Integer id;
     String username;
+    String schoolName;
     String major;
     String password;
     String faceFeatures;

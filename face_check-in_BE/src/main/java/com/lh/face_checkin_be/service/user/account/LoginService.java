@@ -12,5 +12,5 @@ import java.util.Map;
  * @version:v1.0
  */
 public interface LoginService {
-    public Map<String, String> getToken(Integer usertype, String username, String password);
+    public Map<String, String> getToken(Integer usertype, String username, String password, String sid);
 }

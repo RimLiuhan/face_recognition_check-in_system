@@ -28,7 +28,8 @@ public class AddNewCourseImpl implements AddNewCourse {
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
     @Override
-    public List<Students> getStudentsList(String courseName, String className, String teacherId,MultipartFile file) throws Exception {
+    public List<Students> getStudentsList(String schoolName, String courseName, String className, String teacherId,MultipartFile file) throws Exception {
+        System.out.println(schoolName + " " + courseName + " " + className);
         List<Students> students = new ArrayList<>();
         HSSFWorkbook workbook = new HSSFWorkbook(file.getInputStream());
         HSSFSheet sheet = workbook.getSheetAt(0);

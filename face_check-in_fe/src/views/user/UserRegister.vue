@@ -20,6 +20,9 @@
                 </form>
             </div>
         </div>
+        <div class="tips">
+            此界面为教师账号注册, 学生可在教师创建班级后直接登录
+        </div>
     </ContentField>
 </template>
 
@@ -76,5 +79,10 @@ button {
 }
 div.error_message {
     color: red;
+}
+div.tips {
+    font-size: 12px;
+    color: #999;
+    margin-top: 10px;
 }
 </style>
