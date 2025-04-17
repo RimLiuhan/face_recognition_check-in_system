@@ -48,7 +48,7 @@ const routes = [
     }
   },
   {
-    path: "/teacher/camera/:major/",
+    path: "/teacher/camera/:major/:schoolName",
     name: 'camera',
     component: CameraView,
     meta: {

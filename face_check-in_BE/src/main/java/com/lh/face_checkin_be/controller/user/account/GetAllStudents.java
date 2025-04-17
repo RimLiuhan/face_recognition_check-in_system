@@ -27,8 +27,9 @@ public class GetAllStudents {
     private CameraPictureService cameraPictureService;
 
     @GetMapping("/getAllStudents/")
-    public List<String> getAllStudents(@RequestParam String major) {
+    public List<String> getAllStudents(@RequestParam String major,
+                                       @RequestParam String schoolName) {
 
-        return cameraPictureService.getStudentsByMajor(major);
+        return cameraPictureService.getStudentsByMajor(major, schoolName);
     }
 }

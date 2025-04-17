@@ -40,9 +40,10 @@ public class CameraPictureServiceImpl implements CameraPictureService {
     private String outputFilePath = "src/main/resources/static/camera.jpg";
     private List<Students> students;
 
-    public List<String> getStudentsByMajor(String major) {
+    public List<String> getStudentsByMajor(String major, String school_name) {
         QueryWrapper<Students> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("major", major);
+        queryWrapper.eq("school_name", school_name);
         students = studentsMapper.selectList(queryWrapper);
         List<String> studentList = students.stream().map(Students::getUsername).collect(Collectors.toList());
         return studentList;

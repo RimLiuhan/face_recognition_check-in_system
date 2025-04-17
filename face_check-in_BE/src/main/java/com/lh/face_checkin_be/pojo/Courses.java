@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Courses {
     private String course;
+    private String schoolName;
     private String major;
     private String teacher;
 

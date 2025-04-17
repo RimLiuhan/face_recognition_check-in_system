@@ -48,6 +48,7 @@
       const store = useStore();
       const route = useRoute();
       const major = route.params.major;
+      const schoolName = route.params.schoolName;
   
       let notCheckStudents = ref([]);
       let checkedStudents = ref(new Set());
@@ -60,7 +61,7 @@
           headers: {
             Authorization: 'Bearer ' + store.state.user.token,
           },
-          data: { major: major },
+          data: { major, schoolName },
           success(response) {
             notCheckStudents.value = response;
           },

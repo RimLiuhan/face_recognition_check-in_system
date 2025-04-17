@@ -2,15 +2,11 @@ package com.lh.face_checkin_be.service.impl.user.teacher;
 
 import com.lh.face_checkin_be.pojo.Students;
 import com.lh.face_checkin_be.service.user.teacher.AddNewCourse;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,10 +21,8 @@ import java.util.List;
  */
 @Service
 public class AddNewCourseImpl implements AddNewCourse {
-    @Autowired
-    private SqlSessionFactory sqlSessionFactory;
     @Override
-    public List<Students> getStudentsList(String schoolName, String courseName, String className, String teacherId,MultipartFile file) throws Exception {
+    public List<Students> createNewCourse(String schoolName, String courseName, String className, String teacherId,MultipartFile file) throws Exception {
         System.out.println(schoolName + " " + courseName + " " + className);
         List<Students> students = new ArrayList<>();
         HSSFWorkbook workbook = new HSSFWorkbook(file.getInputStream());

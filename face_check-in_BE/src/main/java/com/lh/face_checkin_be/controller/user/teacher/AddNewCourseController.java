@@ -40,7 +40,7 @@ public class AddNewCourseController {
             return ResponseEntity.badRequest().body("No file uploaded -- 请上传学生名单");
         }
         try {
-            List<Students> students = addNewCourse.getStudentsList(schoolName, courseName, className, teacherId, file);
+            List<Students> students = addNewCourse.createNewCourse(schoolName, courseName, className, teacherId, file);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Failed to read file -- 文件读取失败");
         }

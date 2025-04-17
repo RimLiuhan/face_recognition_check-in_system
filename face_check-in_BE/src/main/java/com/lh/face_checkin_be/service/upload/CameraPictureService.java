@@ -16,5 +16,5 @@ import java.util.List;
  */
 public interface CameraPictureService {
     ResponseEntity<?> checkImage(String image);
-    List<String> getStudentsByMajor(String major);
+    List<String> getStudentsByMajor(String major, String schoolName);
 }

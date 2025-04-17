@@ -5,9 +5,9 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-3">{{ course.course }}</div>
-                <div class="col-2">{{ course.major }}</div>
+                <div class="col-2">{{ course.schoolName }} - {{ course.major }}</div>
                 <div class="col-2 ms-auto">
-                    <button type="button" class="btn btn-primary" @click="publish(course.major)">发布签到</button>
+                    <button type="button" class="btn btn-primary" @click="publish(course.major, course.schoolName)">发布签到</button>
                 </div>
             </div>
         </div>
@@ -38,12 +38,14 @@ export default {
             success(resp) {
                 courses.value = resp;
             }
+            
         })
-        const publish = major => {
+        const publish = (major, schoolName) => {
             router.push({
                 name: "camera",
                 params: {
                     major,
+                    schoolName
                 }
             })
         }
