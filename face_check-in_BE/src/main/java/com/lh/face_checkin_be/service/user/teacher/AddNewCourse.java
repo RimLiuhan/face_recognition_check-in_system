@@ -16,5 +16,5 @@ import java.util.List;
  * @version:v1.0
  */
 public interface AddNewCourse {
-    List<Students> createNewCourse(String schoolName, String courseName, String className, String teacherId, MultipartFile file) throws Exception;
+    boolean createNewCourse(String schoolName, String courseName, String className, String teacherId, MultipartFile file) throws Exception;
 }

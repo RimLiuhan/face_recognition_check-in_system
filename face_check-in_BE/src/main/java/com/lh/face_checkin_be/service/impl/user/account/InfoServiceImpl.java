@@ -40,7 +40,7 @@ public class InfoServiceImpl implements InfoService {
     @Override
     public Map<String, String> checkFaceFeatures(User user) {
         QueryWrapper<Students> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username", user.getUsername());
+        queryWrapper.eq("id", user.getId());
         Students students = studentsMapper.selectOne(queryWrapper);
 
         Map<String, String> map = new HashMap<>();

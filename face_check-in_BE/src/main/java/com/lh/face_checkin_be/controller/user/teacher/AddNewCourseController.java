@@ -40,10 +40,13 @@ public class AddNewCourseController {
             return ResponseEntity.badRequest().body("No file uploaded -- 请上传学生名单");
         }
         try {
-            List<Students> students = addNewCourse.createNewCourse(schoolName, courseName, className, teacherId, file);
+            boolean result = addNewCourse.createNewCourse(schoolName, courseName, className, teacherId, file);
+            if (!result) {
+                return ResponseEntity.badRequest().body("Failed to create new course -- 创建课程失败");
+            }
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Failed to read file -- 文件读取失败");
         }
-        return ResponseEntity.ok("success");
+        return ResponseEntity.ok("success -- 创建课程成功");
     }
 }
