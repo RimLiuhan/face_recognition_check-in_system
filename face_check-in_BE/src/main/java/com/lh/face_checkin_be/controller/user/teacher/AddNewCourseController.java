@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * ClassName:AddNewCourseController
@@ -39,13 +41,27 @@ public class AddNewCourseController {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("No file uploaded -- 请上传学生名单");
         }
+//        try {
+//            Map<String, String> result = addNewCourse.createNewCourse(schoolName, courseName, className, teacherId, file);
+//            if (!result.get("error_message").equals("success")) {
+//                return ResponseEntity.badRequest().body(result.get("error_message") + " -- 学校:" + result.get("school")
+//                                                        + " -- 班级:" + result.get("major"));
+//            }
+//        } catch (Exception e) {
+//            return ResponseEntity.badRequest().body("Failed to read file -- 文件读取失败");
+//        }
         try {
-            boolean result = addNewCourse.createNewCourse(schoolName, courseName, className, teacherId, file);
-            if (!result) {
-                return ResponseEntity.badRequest().body("Failed to create new course -- 创建课程失败");
+            Map<String, String> result = addNewCourse.createNewCourse(schoolName, courseName, className, teacherId, file);
+            // 检查是否存在 error_message 键
+            if (result.containsKey("error_message") && !result.get("error_message").equals("success")) {
+                return ResponseEntity.badRequest().body(
+                        result.get("error_message") + " -- 学校:" + result.get("school") + " -- 班级:" + result.get("major")
+                );
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             return ResponseEntity.badRequest().body("Failed to read file -- 文件读取失败");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Internal error -- 内部错误: " + e.getMessage());
         }
         return ResponseEntity.ok("success -- 创建课程成功");
     }

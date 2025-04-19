@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * ClassName:AddNewCourse
@@ -16,5 +17,5 @@ import java.util.List;
  * @version:v1.0
  */
 public interface AddNewCourse {
-    boolean createNewCourse(String schoolName, String courseName, String className, String teacherId, MultipartFile file) throws Exception;
+    Map<String, String> createNewCourse(String schoolName, String courseName, String className, String teacherId, MultipartFile file) throws Exception;
 }
