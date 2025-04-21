@@ -75,6 +75,7 @@ public class FileUploadController {
             int studentId = getStudentId(user);
             System.out.println("studentId: " + studentId);
             String faceFeatures = getFaceFeatures(path.toString());
+            System.out.println("faceFeatures: " + faceFeatures);
             // 查找students表, 对应ID更新face_features字段
             QueryWrapper<Students> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("id", studentId);

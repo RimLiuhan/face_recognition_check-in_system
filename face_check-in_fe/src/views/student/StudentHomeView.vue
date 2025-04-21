@@ -12,8 +12,9 @@
 <script>
 import ContentField from '@/components/ContentField.vue';
 import { useStore } from 'vuex';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import $ from 'jquery';
+import * as faceapi from 'face-api.js';
 
 export default {
   components: { ContentField },
@@ -39,16 +40,32 @@ export default {
 
     console.log(error_message.value);
 
-    const upload = () => {
+    const loadModels = async () => {
+        await faceapi.nets.tinyFaceDetector.loadFromUri('/weights');
+        await faceapi.nets.faceLandmark68Net.loadFromUri('/weights');
+        await faceapi.nets.faceRecognitionNet.loadFromUri('/weights');
+        console.log('Models loaded successfully');
+      };
+
+    const upload = async() => {
       if (!fileInput.value || fileInput.value.files.length === 0) {
         alert('请选择一张图片');
         return;
       }
       const file = fileInput.value.files[0];
+      const img = await loadImage(file);
+      // 使用 face-api.js 检测人脸
+      const detections = await faceapi.detectAllFaces(img, new faceapi.TinyFaceDetectorOptions())
+          .withFaceLandmarks()
+          .withFaceDescriptors();
+      if (detections.length === 0) {
+        alert('未检测到人脸，请重新选择图片。');
+        return;
+      }
       const formData = new FormData();
       formData.append('photo', file, store.state.user.id + store.state.user.username + ".jpg");
 
-      $.ajax({
+      await $.ajax({
         url: "http://127.0.0.1:3007/upload/", // 后端接口地址
         type: 'POST',
         data: formData,
@@ -59,11 +76,30 @@ export default {
         },
         success: function(response) {
             console.log('Photo saved:', response);
+            alert('上传成功');
         },
         error: function(error) {
             console.error('Error uploading photo:', error);
         }
     });
+    };
+
+    onMounted(() => {
+        loadModels();
+    });
+
+    // 辅助函数：将File对象转为HTMLImageElement
+    const loadImage = (file) => {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        const url = URL.createObjectURL(file);
+        img.onload = () => {
+          URL.revokeObjectURL(url); // 释放内存
+          resolve(img);
+        };
+        img.onerror = (e) => reject(e);
+        img.src = url;
+      });
     };
 
     return {
