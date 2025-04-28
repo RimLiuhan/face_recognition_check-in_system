@@ -1,6 +1,7 @@
   <template>
     <div>
       <h1>摄像头实时预览</h1>
+      <h4>最好在光线适度的环境下使用, 如果背景光线较强会影响人脸的识别</h4>
       <div class="card">
         <div class="card-body">
           <video ref="video" autoplay></video>
