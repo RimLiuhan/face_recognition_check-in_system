@@ -8,8 +8,10 @@ import com.arcsoft.face.enums.DetectMode;
 import com.arcsoft.face.enums.DetectOrient;
 import com.arcsoft.face.enums.ErrorInfo;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 
 /**
@@ -28,6 +30,7 @@ public class StartEngine {
     @Value("${sdkKey}")
     private String sdkKey;
     @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE) // 关键修改：设置为原型作用域
     public EngineInfo engineInfo() {
         EngineInfo engineInfo = new EngineInfo();
 

@@ -6,14 +6,15 @@
             <div class="row">
                 <div class="col-3">{{ course.course }}</div>
                 <div class="col-2">{{ course.schoolName }} - {{ course.major }}</div>
-                <div class="col-2 ms-auto">
-                    <button type="button" class="btn btn-success" @click="check(course.major, course.schoolName)">
+                <div class="col-6 ms-auto">
+                    <button style="margin-right: 5px;" type="button" class="btn btn-success" @click="check(course.major, course.schoolName)">
                         班级详情
                     </button>
-                </div>
-                <div class="col-2">
-                    <button type="button" class="btn btn-primary" @click="publish(course.major, course.schoolName)">
-                        发布签到
+                    <button style="margin-right: 5px;" type="button" class="btn btn-primary" @click="publish(course.major, course.schoolName)">
+                        发布签到①
+                    </button>
+                    <button type="button" class="btn btn-info" @click="publish2(course.major, course.schoolName)">
+                        发布签到②
                     </button>
                 </div>
             </div>
@@ -57,6 +58,16 @@ export default {
             })
         }
 
+        const publish2 = (major, schoolName) => {
+            router.push({
+                name: "uploadpicture",
+                params: {
+                    major,
+                    schoolName
+                }
+            })
+        }
+
         const check = (major, schoolName) => {
             router.push({
                 name: "editclass",
@@ -69,7 +80,8 @@ export default {
         return {
             courses,
             publish,
-            check
+            check,
+            publish2
         }
     }
 }
@@ -79,4 +91,5 @@ export default {
 .card {
     margin-top: 7px;
 }
+
 </style>

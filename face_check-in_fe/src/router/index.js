@@ -8,6 +8,7 @@ import CameraView from '@/views/teacher/CameraView.vue'
 import AddNewCourse from '@/views/teacher/AddNewCourse.vue'
 import TakephotoToUpload from '@/views/student/TakephotoToUpload.vue'
 import EditClassView from '@/views/teacher/EditClassView.vue'
+import UploadPictureCheckIn from '@/views/teacher/UploadPictureCheckIn.vue'
 
 const routes = [
   {
@@ -77,6 +78,14 @@ const routes = [
     path: "/teacher/editclass/:major/:schoolName",
     name: 'editclass',
     component: EditClassView,
+    meta: {
+      requestAuth: true,
+    }
+  },
+  {
+    path: "/teacher/uploadpicture/:major/:schoolName",
+    name: 'uploadpicture',
+    component: UploadPictureCheckIn,
     meta: {
       requestAuth: true,
     }

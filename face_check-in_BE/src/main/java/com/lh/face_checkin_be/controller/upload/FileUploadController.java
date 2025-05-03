@@ -20,6 +20,7 @@ import com.lh.face_checkin_be.pojo.Students;
 import com.lh.face_checkin_be.pojo.User;
 import com.lh.face_checkin_be.proxy.CurrentUser;
 import com.lh.face_checkin_be.service.impl.utils.UserDetailsImpl;
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -50,10 +51,13 @@ public class FileUploadController {
     private String uploadDir;
 
     @Autowired
-    EngineInfo engineInfo;
+    private ObjectFactory<EngineInfo> engineInfoProvider; // 使用ObjectFactory延迟获取
 
     @Autowired
     StudentsMapper studentsMapper;
+
+    private EngineInfo engineInfo;
+    private FaceEngine faceEngine;
 
     @PostMapping("/upload/")
     @CurrentUser
@@ -62,6 +66,7 @@ public class FileUploadController {
             return ResponseEntity.badRequest().body("No file uploaded");
         }
 
+        engineInfo = engineInfoProvider.getObject();
         try {
             // 确保上传目录存在
             File dir = new File(uploadDir);
@@ -94,6 +99,9 @@ public class FileUploadController {
         } catch (IOException e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().body("Failed to save file: " + e.getMessage());
+        } finally {
+            if (faceEngine != null)
+                faceEngine.unInit();
         }
 
     }
@@ -106,7 +114,7 @@ public class FileUploadController {
 
     private String getFaceFeatures(String imagePath) {
         int errorCode = engineInfo.getErrorCode();
-        FaceEngine faceEngine = engineInfo.getFaceEngine();
+        faceEngine = engineInfo.getFaceEngine();
         //人脸检测
         ImageInfo imageInfo = getRGBData(new File(imagePath));
         List<FaceInfo> faceInfoList = new ArrayList<FaceInfo>();
@@ -120,6 +128,7 @@ public class FileUploadController {
         FaceFeature faceFeature = new FaceFeature();
         errorCode = faceEngine.extractFaceFeature(imageInfo.getImageData(), imageInfo.getWidth(), imageInfo.getHeight(), imageInfo.getImageFormat(), faceInfoList.get(0), faceFeature);
         System.out.println("特征值大小：" + faceFeature.getFeatureData().length);
+
         return Base64.getEncoder().encodeToString(faceFeature.getFeatureData());
     }
 }
