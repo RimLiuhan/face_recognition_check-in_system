@@ -54,14 +54,16 @@ public class AddNewCourseImpl implements AddNewCourse {
         }
 
         String message = checkStudentExist(file);
-        String school = message.split(" ")[0];
-        String major = message.split(" ")[1];
-        if (message != null && !school.equals(schoolName) || !major.equals(className)) {
-            Map<String, String> map = new HashMap<>();
-            map.put("error_message", "该班学生信息已存在, 您所新建的课程其学校或班级名称与已注册的不一致, 请返回修改");
-            map.put("school", school);
-            map.put("major", major);
-            return map;
+        if (message != null) {
+            String school = message.split(" ")[0];
+            String major = message.split(" ")[1];
+            if (!school.equals(schoolName) || !major.equals(className)) {
+                Map<String, String> map = new HashMap<>();
+                map.put("error_message", "该班学生信息已存在, 您所新建的课程其学校或班级名称与已注册的不一致, 请返回修改");
+                map.put("school", school);
+                map.put("major", major);
+                return map;
+            }
         }
 
         System.out.println(schoolName + " " + courseName + " " + className + " " + teacherId);
@@ -104,6 +106,7 @@ public class AddNewCourseImpl implements AddNewCourse {
         HSSFWorkbook workbook = new HSSFWorkbook(file.getInputStream());
         HSSFSheet sheet = workbook.getSheetAt(0);
 
+        // 找出学号所在列的序号
         Integer idCol = 0;
         for (int i = 0; i < sheet.getRow(0).getPhysicalNumberOfCells(); i ++) {
             if (sheet.getRow(0).getCell(i).toString().equals("学号")) {

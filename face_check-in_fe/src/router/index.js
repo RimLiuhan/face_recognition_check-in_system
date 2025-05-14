@@ -9,6 +9,7 @@ import AddNewCourse from '@/views/teacher/AddNewCourse.vue'
 import TakephotoToUpload from '@/views/student/TakephotoToUpload.vue'
 import EditClassView from '@/views/teacher/EditClassView.vue'
 import UploadPictureCheckIn from '@/views/teacher/UploadPictureCheckIn.vue'
+import AdministratorHomeView from '@/views/administrator/AdministratorHomeView.vue'
 
 const routes = [
   {
@@ -46,6 +47,14 @@ const routes = [
     path: "/teacher/",
     name: 'teacher_index',
     component: TeacherHomeView,
+    meta: {
+      requestAuth: true
+    }
+  },
+  {
+    path: "/admin/",
+    name: 'admin_index',
+    component: AdministratorHomeView,
     meta: {
       requestAuth: true
     }

@@ -41,15 +41,7 @@ public class AddNewCourseController {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("No file uploaded -- 请上传学生名单");
         }
-//        try {
-//            Map<String, String> result = addNewCourse.createNewCourse(schoolName, courseName, className, teacherId, file);
-//            if (!result.get("error_message").equals("success")) {
-//                return ResponseEntity.badRequest().body(result.get("error_message") + " -- 学校:" + result.get("school")
-//                                                        + " -- 班级:" + result.get("major"));
-//            }
-//        } catch (Exception e) {
-//            return ResponseEntity.badRequest().body("Failed to read file -- 文件读取失败");
-//        }
+//
         try {
             Map<String, String> result = addNewCourse.createNewCourse(schoolName, courseName, className, teacherId, file);
             // 检查是否存在 error_message 键

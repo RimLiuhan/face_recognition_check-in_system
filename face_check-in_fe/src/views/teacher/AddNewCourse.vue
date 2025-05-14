@@ -74,8 +74,15 @@ export default {
                 success:function(response){
                     alert(response);
                 },
-                error:function(response){
-                    alert(response.responseText);
+                error:function(xhr){
+                    // 更详细的错误处理
+                    let errorMsg = "请求失败";
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMsg = xhr.responseJSON.message;
+                    } else if (xhr.responseText) {
+                        errorMsg = xhr.responseText;
+                    }
+                    alert(errorMsg);
                 }
             })
         }

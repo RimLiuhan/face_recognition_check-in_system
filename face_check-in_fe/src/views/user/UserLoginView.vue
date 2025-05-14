@@ -61,6 +61,8 @@ export default {
                                 router.push({ name: 'student_index'})
                             else if (store.state.user.usertype == 2)
                                 router.push({name: "teacher_index"})
+                            else if (store.state.user.usertype == 3)
+                                router.push({name: "admin_index"})
                             console.log(store.state.user);
                         }
                     })
