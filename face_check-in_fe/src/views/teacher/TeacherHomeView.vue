@@ -1,6 +1,6 @@
 <template>
     <content-field>
-        课程列表
+        <div style="background: #f8f9fa; border-radius: 5px;">课程列表</div>
     <div class="card" v-for="(course, index) in courses" :key="index">
         <div class="card-body">
             <div class="row">

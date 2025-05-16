@@ -1,5 +1,36 @@
 <template>
     <content-field>
+      <div class="row search-bar" style="margin-bottom: 20px; padding: 15px; background: #f8f9fa; border-radius: 5px;">
+        <div class="col-md-2">
+          <div class="input-group">
+            <span class="input-group-text">学号</span>
+            <input type="text" class="form-control" v-model="searchParams.id" placeholder="输入学号">
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="input-group">
+            <span class="input-group-text">姓名</span>
+            <input type="text" class="form-control" v-model="searchParams.username" placeholder="输入姓名">
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="input-group">
+            <span class="input-group-text">班级</span>
+            <input type="text" class="form-control" v-model="searchParams.major" placeholder="输入班级">
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="input-group">
+            <span class="input-group-text">学校</span>
+            <input type="text" class="form-control" v-model="searchParams.schoolName" placeholder="输入学校">
+          </div>
+        </div>
+        <div class="col-md-4 mt-2">
+          <button class="btn btn-primary me-2" @click="searchStudents">查询</button>
+          <button class="btn btn-secondary" @click="resetSearch">重置</button>
+        </div>
+      </div>
+      
       <table class="table table-dark table-striped">
         <thead>
           <tr>
@@ -20,7 +51,9 @@
             <td>
               {{ !student.faceFeatures ? '未登记' : '已登记' }}
             </td>
-            <td><button class="btn btn-danger" @click="deleteStudent(student.id)">删除学生</button></td>
+            <td>
+              <button class="btn btn-danger" @click="deleteStudent(student.id, student.username, student.major, student.schoolName)">删除学生</button>
+            </td>
           </tr>
           <tr>
             <td><input class="text" v-model="newId"/></td>
@@ -46,6 +79,8 @@ export default {
   components: { ContentField },
   setup() {
     let students = ref([]);
+    let allStudents = ref([]);
+  
     const store = useStore();
     const route = useRoute();
     const major = route.params.major;
@@ -54,6 +89,14 @@ export default {
     let newId = ref('');
     let newUsername = ref('');
     let newFaceFeatures = "未登记";
+
+    // 查询参数
+    const searchParams = ref({
+      id: '',
+      username: '',
+      major: '',
+      schoolName: ''
+    });
 
     
     const getStudentList = async () => {
@@ -65,9 +108,39 @@ export default {
           },
           data: { major, schoolName },
           success(response) {
+            allStudents.value = response;
             students.value = response;
           },
         });
+    };
+
+    // 查询学生
+    const searchStudents = () => {
+      if (!searchParams.value.id && !searchParams.value.username && 
+          !searchParams.value.major && !searchParams.value.schoolName) {
+        students.value = allStudents.value;
+        return;
+      }
+
+      students.value = allStudents.value.filter(student => {
+        return (
+          (!searchParams.value.id || student.id.toString().includes(searchParams.value.id)) &&
+          (!searchParams.value.username || student.username.includes(searchParams.value.username)) &&
+          (!searchParams.value.major || student.major.includes(searchParams.value.major)) &&
+          (!searchParams.value.schoolName || student.schoolName.includes(searchParams.value.schoolName))
+        )
+      });
+    };
+
+    // 重置查询
+    const resetSearch = () => {
+      searchParams.value = {
+        id: '',
+        username: '',
+        major: '',
+        schoolName: '' 
+      };
+      students.value = allStudents.value;
     };
 
     getStudentList();
@@ -91,7 +164,13 @@ export default {
       newUsername.value = '';
     }
 
-    const deleteStudent = (id) => {
+    const deleteStudent = (id, username, major, schoolName) => {
+      const isConfirmed = confirm(`确定要删除学号为 ${id} (姓名: ${username}, 学校: ${schoolName}, 班级: ${major})的学生吗？`);
+        
+      if (!isConfirmed) {
+          return; // If user cancels, do nothing
+      }
+
       $.ajax({
         url: 'http://127.0.0.1:3007/deleteStudent/',
         type: 'POST',
@@ -115,7 +194,11 @@ export default {
         schoolName,
         newFaceFeatures,
         addStudent,
-        deleteStudent
+        deleteStudent,
+        allStudents,
+        searchParams,
+        resetSearch,
+        searchStudents
     }
   }
 }
