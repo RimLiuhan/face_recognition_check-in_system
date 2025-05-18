@@ -10,6 +10,8 @@ import TakephotoToUpload from '@/views/student/TakephotoToUpload.vue'
 import EditClassView from '@/views/teacher/EditClassView.vue'
 import UploadPictureCheckIn from '@/views/teacher/UploadPictureCheckIn.vue'
 import AdministratorHomeView from '@/views/administrator/AdministratorHomeView.vue'
+import UpdatePasswordView from '@/views/student/UpdatePasswordCheckFaceView.vue'
+import UpdateNewPassword from '@/views/student/UpdateNewPassword.vue'
 
 const routes = [
   {
@@ -55,6 +57,22 @@ const routes = [
     path: "/admin/",
     name: 'admin_index',
     component: AdministratorHomeView,
+    meta: {
+      requestAuth: true
+    }
+  },
+  {
+    path: "/student/updatepassword_checkface/",
+    name: 'update_password',
+    component: UpdatePasswordView,
+    meta: {
+      requestAuth: true
+    }
+  },
+  {
+    path: "/student/updatenewpassword/",
+    name: 'update_new_password',
+    component: UpdateNewPassword,
     meta: {
       requestAuth: true
     }

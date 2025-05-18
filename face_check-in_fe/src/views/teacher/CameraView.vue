@@ -13,15 +13,15 @@
     </div>
     <content-field>
       <div class="row">
-        <div class="col-6">
+        <div class="col-6" style="border: 1px solid black; padding: 2px; border-radius: 8px;">
           签到成功
-          <ul>
+          <ul class="student-list">
             <li v-for="student in checkedStudents" :key="student">{{ student }}</li>
           </ul>
         </div>
-        <div class="col-6">
+        <div class="col-6" style="border: 1px solid black; padding: 2px; border-radius: 8px;">
           未签到
-          <ul>
+          <ul class="student-list">
             <li v-for="student in notCheckStudents" :key="student">{{ student }}</li>
           </ul>
         </div>

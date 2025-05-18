@@ -1,6 +1,9 @@
 <template>
     <content-field>
-        新建课程
+        <div style="font-size: large;">
+            新建课程
+        </div>
+        
         <div class="row justify-content-md-center" style="margin-top: 10px;">
         <div class="col-3">
             <form @submit.prevent="handleSubmit">

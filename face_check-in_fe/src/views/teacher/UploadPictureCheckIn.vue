@@ -12,15 +12,15 @@
     </content-field>
     <content-field>
     <div class="row">
-        <div class="col-6">
+        <div class="col-6" style="border: 1px solid black; padding: 2px; border-radius: 8px;">
           签到成功
-          <ul>
+          <ul class="student-list">
             <li v-for="student in checkedStudents" :key="student">{{ student }}</li>
           </ul>
         </div>
-        <div class="col-6">
+        <div class="col-6" style="border: 1px solid black; padding: 2px; border-radius: 8px;">
           未签到
-          <ul>
+          <ul class="student-list">
             <li v-for="student in notCheckStudents" :key="student">{{ student }}</li>
           </ul>
         </div>
@@ -176,3 +176,15 @@
     }
   }
   </script>
+
+<style scoped>
+  .student-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 两列等宽 */
+  gap: 10px;
+  padding-left: 0;
+  /* list-style: none; */
+  list-style-position: inside; /* 原点与内容对齐 */
+  padding-left: 0; /* 移除默认的左内边距 */
+}
+</style>

@@ -50,7 +50,8 @@ public class TakePhotoController {
 
     @PostMapping("/student/takephoto/")
     @CurrentUser
-    public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile file, User user) {
+    public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile file,
+                                         User user) {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("请选择要上传的文件");
         }
@@ -78,6 +79,8 @@ public class TakePhotoController {
             }
             // 查找students表, 对应ID更新face_features字段
             int studentId = getStudentId(user);
+//            if (studentId != Integer.valueOf(id))
+//                return ResponseEntity.badRequest().body("请重新拍照, 确保是本人");
             QueryWrapper<Students> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("id", studentId);
             Students students = studentsMapper.selectOne(queryWrapper);
@@ -90,6 +93,7 @@ public class TakePhotoController {
             response.put("message", "文件上传成功");
             response.put("filename", newFilename);
             response.put("path", filePath.toString());
+            response.put("studentId", String.valueOf(studentId));
             Files.delete(filePath);
             return ResponseEntity.ok(response);
         } catch (IOException e) {
