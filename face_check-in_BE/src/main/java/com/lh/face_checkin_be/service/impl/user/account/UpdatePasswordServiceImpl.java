@@ -1,6 +1,8 @@
 package com.lh.face_checkin_be.service.impl.user.account;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lh.face_checkin_be.mapper.StudentsMapper;
+import com.lh.face_checkin_be.pojo.Students;
 import com.lh.face_checkin_be.service.user.account.UpdatePasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +53,12 @@ public class UpdatePasswordServiceImpl implements UpdatePasswordService {
             return ResponseEntity.badRequest().body(map);
         }
 
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        QueryWrapper<Students> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", id);
+        Students students = studentsMapper.selectOne(queryWrapper);
+        students.setPassword(encodedPassword);
+        studentsMapper.update(students, queryWrapper);
         map.put("success", true);
         map.put("message", "密码修改成功");
         return ResponseEntity.ok()

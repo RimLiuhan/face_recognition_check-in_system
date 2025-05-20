@@ -1,6 +1,6 @@
 <template>
     <div class="camera-upload-container">
-      <h2 class="mb-4">拍照上传</h2>
+      <h2 class="mb-4">拍照核实身份</h2>
       
       <div class="camera-box mb-3">
         <video ref="video" class="camera-view" autoplay playsinline v-show="!photoTaken"></video>
@@ -150,6 +150,7 @@
       const blob = dataURLtoBlob(photoData.value);
       const formData = new FormData();
       formData.append('image', blob, 'photo.jpg');
+      formData.append('id', store.state.user.id);
 
       // 调试：打印FormData内容
         for (let [key, value] of formData.entries()) {

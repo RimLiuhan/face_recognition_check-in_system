@@ -19,8 +19,8 @@
                     <label class="form-label">班级名称</label>
                     <input v-model="form.className"  type="text" class="form-control" id="class_name">
                 </div>
-                <div class="mb-3 form-check">
-                    <label class="form-label" for="exampleCheck1">导入学生名单(excel, 注意表格中包含"学号"和"姓名"属性列)</label>
+                <div class="mb-3 form-check tips">
+                    <label class="form-label " for="exampleCheck1">导入学生名单(excel, 注意表格中必须包含"学号"和"姓名"属性列)</label>
                     <input ref="fileInput" class="form-control" type="file" @change="handleFileChange" accept=".xlsx, .xls, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -102,5 +102,9 @@ export default {
 </script>
 
 <style scoped>
-    
+    div.tips {
+        font-size: 12px;
+        color: #999;
+        margin-top: 10px;
+    }
 </style>

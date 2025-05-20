@@ -12,7 +12,7 @@
       <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
     </div>
     <content-field>
-      <div class="row">
+    <div class="row">
         <div class="col-6" style="border: 1px solid black; padding: 2px; border-radius: 8px;">
           签到成功
           <ul class="student-list">
@@ -180,7 +180,7 @@
         getStudentList();
         intervalId = setInterval(function () {
           captureAndSendFrame();
-        }, 2000); // 每 3 秒截取一帧
+        }, 1500); // 每 3 秒截取一帧
       });
   
       // 组件卸载时停止摄像头和定时器
@@ -241,5 +241,15 @@
     width: 40%;
     margin: 10px; /* 为视频和画布添加间距 */
     border: 1px solid #ccc; /* 为视频和画布添加边框，方便观察 */
+  }
+
+  .student-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 两列等宽 */
+    gap: 10px;
+    padding-left: 0;
+    /* list-style: none; */
+    list-style-position: inside; /* 原点与内容对齐 */
+    padding-left: 0; /* 移除默认的左内边距 */
   }
   </style>

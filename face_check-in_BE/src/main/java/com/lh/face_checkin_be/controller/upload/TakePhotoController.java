@@ -3,6 +3,7 @@ package com.lh.face_checkin_be.controller.upload;
 import com.arcsoft.face.FaceEngine;
 import com.arcsoft.face.FaceFeature;
 import com.arcsoft.face.FaceInfo;
+import com.arcsoft.face.FaceSimilar;
 import com.arcsoft.face.toolkit.ImageInfo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lh.face_checkin_be.config.face_engine.EngineInfo;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,10 +47,12 @@ public class TakePhotoController {
     EngineInfo engineInfo;
     @Autowired
     StudentsMapper studentsMapper;
+    private List<Students> students;
 
     @PostMapping("/student/takephoto/")
     @CurrentUser
     public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile file,
+                                         @RequestParam("id") String id,
                                          User user) {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("请选择要上传的文件");
@@ -78,9 +80,13 @@ public class TakePhotoController {
                 return ResponseEntity.badRequest().body("请重新拍照, 人脸清晰离镜头近一点的照片");
             }
             // 查找students表, 对应ID更新face_features字段
-            int studentId = getStudentId(user);
-//            if (studentId != Integer.valueOf(id))
-//                return ResponseEntity.badRequest().body("请重新拍照, 确保是本人");
+            Map<String, String> map = checkFaceFeatures(faceFeatures);
+            if (map.get("error_message").equals("success")) {
+                String studentId = map.get("id");
+                if (!studentId.equals(id))
+                    return ResponseEntity.badRequest().body("请重新拍照, 确保是本人");
+            }
+            int studentId = user.getId();
             QueryWrapper<Students> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("id", studentId);
             Students students = studentsMapper.selectOne(queryWrapper);
@@ -121,9 +127,35 @@ public class TakePhotoController {
         return Base64.getEncoder().encodeToString(faceFeature.getFeatureData());
     }
 
-    private Integer getStudentId(User user) {
-        QueryWrapper<Students> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username", user.getUsername());
-        return studentsMapper.selectOne(queryWrapper).getId();
+//    private Integer getStudentId(User user) {
+//        QueryWrapper<Students> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.eq("username", user.getUsername());
+//        return studentsMapper.selectOne(queryWrapper).getId();
+//    }
+
+    private Map<String, String> checkFaceFeatures(String faceFeature) {
+        FaceEngine faceEngine = engineInfo.getFaceEngine();
+        students = studentsMapper.selectList(null);
+
+        FaceFeature targetFaceFeature = new FaceFeature(Base64.getDecoder().decode(faceFeature));
+        HashMap<String, String> map = new HashMap<>();
+
+        for (Students student : students) {
+            if (student.getFaceFeatures() == null) continue;
+            FaceFeature souceFaceFeature = new FaceFeature(Base64.getDecoder().decode(student.getFaceFeatures()));
+            FaceSimilar faceSimilar = new FaceSimilar();
+            int errorCode = faceEngine.compareFaceFeature(targetFaceFeature, souceFaceFeature, faceSimilar);
+            System.out.println(student.getUsername() + "相似度：" + faceSimilar.getScore());
+            if (faceSimilar.getScore() > 0.65) {
+                System.out.println("识别成功" + student.getUsername());
+                map.put("error_message", "success");
+                map.put("username", student.getUsername());
+                map.put("id", String.valueOf(student.getId()));
+                return map;
+            }
+        }
+
+        map.put("error_message", "fail");
+        return map;
     }
 }

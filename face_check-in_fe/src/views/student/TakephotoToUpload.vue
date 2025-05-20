@@ -140,6 +140,7 @@
       const blob = dataURLtoBlob(photoData.value);
       const formData = new FormData();
       formData.append('image', blob, 'photo.jpg');
+      formData.append('id', store.state.user.id);
       
       const response = await fetch('http://127.0.0.1:3007/student/takephoto/', {
         method: 'POST',
