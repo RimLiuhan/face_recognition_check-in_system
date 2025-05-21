@@ -146,6 +146,17 @@ export default {
     getStudentList();
 
     const addStudent = () => {
+      // 检查学号和姓名是否为空
+      if (!newId.value.trim()) {
+        alert("学号不能为空");
+        return;
+      }
+      
+      if (!newUsername.value.trim()) {
+        alert("姓名不能为空");
+        return;
+      }
+      
       $.ajax({
         url: 'http://127.0.0.1:3007/addNewStudent/',
         type: 'POST',

@@ -62,4 +62,8 @@ public class UserDetailsImpl implements UserDetails {
     public Integer getUserType() {
         return user.getUserType();
     }
+
+    public String getId() {
+        return user.getId();
+    }
 }

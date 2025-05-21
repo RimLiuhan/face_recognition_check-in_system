@@ -33,6 +33,7 @@ public class LoginServiceImpl implements LoginService {
         // 创建用户密码认证令牌
         UsernamePasswordTypeAuthenticationToken authenticationToken =
                 new UsernamePasswordTypeAuthenticationToken(username, password, usertype, sid, null);
+        System.out.println("认证令牌中学号：" + sid);
         // 用户身份验证
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
         // 获取认证后的用户信息
@@ -40,7 +41,7 @@ public class LoginServiceImpl implements LoginService {
         User user = loginUser.getUser();
 
         //生成jwt令牌
-        String jwt = JwtUtil.createJWT(user.getId().toString(), user.getUserType());
+        String jwt = JwtUtil.createJWT(user.getId(), user.getUserType());
 
         Map<String, String> map = new HashMap<>();
         map.put("error_message", "success");

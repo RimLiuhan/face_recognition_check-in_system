@@ -19,8 +19,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Students {
-    @TableId(value = "id", type = IdType.AUTO)
-    Integer id;
+    @TableId(value = "id")
+    String id;
     String username;
     String schoolName;
     String major;

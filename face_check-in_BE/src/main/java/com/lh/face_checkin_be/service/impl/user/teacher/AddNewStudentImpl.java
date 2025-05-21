@@ -31,7 +31,7 @@ public class AddNewStudentImpl implements AddNewStudent {
         Map<String, String> map = new HashMap<>();
         Students student = studentsMapper.selectById(newId);
         if (student == null) {
-            studentsMapper.insert(new Students(Integer.parseInt(newId),
+            studentsMapper.insert(new Students(newId,
                                     newUsername,
                                     schoolName,
                                     major,

@@ -78,7 +78,7 @@ public class FileUploadController {
             byte[] bytes = file.getBytes();
             Path path = Paths.get(uploadDir + file.getOriginalFilename());
             Files.write(path, bytes);
-            int studentId = getStudentId(user);
+            String studentId = user.getId();
             System.out.println("studentId: " + studentId);
             String faceFeatures = getFaceFeatures(path.toString());
             if (faceFeatures == null) {
@@ -106,7 +106,7 @@ public class FileUploadController {
 
     }
 
-    private Integer getStudentId(User user) {
+    private String getStudentId(User user) {
         QueryWrapper<Students> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("username", user.getUsername());
         return studentsMapper.selectOne(queryWrapper).getId();

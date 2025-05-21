@@ -10,6 +10,7 @@ import com.lh.face_checkin_be.pojo.User;
 import com.lh.face_checkin_be.service.user.teacher.AddNewCourse;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -80,14 +81,33 @@ public class AddNewCourseImpl implements AddNewCourse {
                 nameCol = i;
             }
         }
+        System.out.println("idCol: " + idCol + " nameCol: " + nameCol);
 
+//        for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+//            double sid = sheet.getRow(i).getCell(idCol).getNumericCellValue();
+//            if (studentsMapper.selectById(sid) != null) continue;
+//            String sname = sheet.getRow(i).getCell(nameCol).getStringCellValue();
+//            String password = passwordEncoder.encode(String.valueOf((int)sid));
+//            Students student = new Students((int) sid, sname, schoolName, className, password, null);
+//            studentsMapper.insert(student);
+//        }
+        DataFormatter formatter = new DataFormatter();
         for (int i = 1; i <= sheet.getLastRowNum(); i++) {
-            double sid = sheet.getRow(i).getCell(idCol).getNumericCellValue();
-            if (studentsMapper.selectById(sid) != null) continue;
-            String sname = sheet.getRow(i).getCell(nameCol).getStringCellValue();
-            String password = passwordEncoder.encode(String.valueOf((int)sid));
-            Students student = new Students((int) sid, sname, schoolName, className, password, null);
-            studentsMapper.insert(student);
+            // 读取学号（兼容文本/数字/科学计数法）
+            String sid = formatter.formatCellValue(sheet.getRow(i).getCell(idCol)).trim();
+            try {
+                if (studentsMapper.selectById(sid) != null) continue;
+
+                // 读取姓名
+                String sname = formatter.formatCellValue(sheet.getRow(i).getCell(nameCol)).trim();
+                String password = passwordEncoder.encode(sid);
+                Students student = new Students(sid, sname, schoolName, className, password, null);
+                studentsMapper.insert(student);
+                System.out.println(student);
+            } catch (NumberFormatException e) {
+                System.err.println("无效的学号格式: " + sid);
+                continue;
+            }
         }
         Map<String, String> map = new HashMap<>();
         map.put("error_message", "success");
@@ -102,6 +122,7 @@ public class AddNewCourseImpl implements AddNewCourse {
     }
 
     private String checkStudentExist(MultipartFile file) throws Exception {
+        DataFormatter formatter = new DataFormatter();
         Map<String, Integer> map = new HashMap<>();
         HSSFWorkbook workbook = new HSSFWorkbook(file.getInputStream());
         HSSFSheet sheet = workbook.getSheetAt(0);
@@ -115,7 +136,7 @@ public class AddNewCourseImpl implements AddNewCourse {
             }
         }
         for (int i = 1; i <= sheet.getLastRowNum(); i++) {
-            double sid = sheet.getRow(i).getCell(idCol).getNumericCellValue();
+            String sid = formatter.formatCellValue(sheet.getRow(i).getCell(idCol)).trim();
             Students student = studentsMapper.selectById(sid);
             if (student != null) {
                 String key = student.getSchoolName() + " " + student.getMajor();

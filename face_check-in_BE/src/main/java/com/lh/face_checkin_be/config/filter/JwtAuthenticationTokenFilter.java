@@ -58,7 +58,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             // 根据用户类型查询不同表
             UserDetailsImpl loginUser;
             if (userType == 1) { // 学生
-                Students student = studentsMapper.selectById(Integer.parseInt(userId));
+                Students student = studentsMapper.selectById(userId);
                 if (student == null) {
                     throw new RuntimeException("学生不存在");
                 }
@@ -66,7 +66,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                         new User(student.getId(), student.getUsername(), student.getPassword(), userType)
                 );
             } else { // 教师或管理员
-                User user = userMapper.selectById(Integer.parseInt(userId));
+                User user = userMapper.selectById(userId);
                 if (user == null) {
                     throw new RuntimeException("用户不存在");
                 }

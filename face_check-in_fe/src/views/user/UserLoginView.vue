@@ -53,7 +53,7 @@ export default {
                 usertype: usertype.value,
                 username: username.value,
                 password: password.value,
-                id: sid.value,
+                id: String(sid.value).trim(),
                 success() {
                     store.dispatch('getinfo', {
                         success() {
@@ -64,6 +64,10 @@ export default {
                             else if (store.state.user.usertype == 3)
                                 router.push({name: "admin_index"})
                             console.log(store.state.user);
+                        },
+                        error: (err) => {
+                            error_message.value = '获取用户信息失败';
+                            console.error(err);
                         }
                     })
                 },

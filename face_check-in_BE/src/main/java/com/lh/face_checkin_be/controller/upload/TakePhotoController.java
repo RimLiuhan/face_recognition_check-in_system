@@ -86,7 +86,7 @@ public class TakePhotoController {
                 if (!studentId.equals(id))
                     return ResponseEntity.badRequest().body("请重新拍照, 确保是本人");
             }
-            int studentId = user.getId();
+            String studentId = user.getId();
             QueryWrapper<Students> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("id", studentId);
             Students students = studentsMapper.selectOne(queryWrapper);

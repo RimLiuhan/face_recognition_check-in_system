@@ -43,6 +43,7 @@ public class JwtUtil {
      */
     public static String createJWT(String subject, Integer userType) {
         JwtBuilder builder = getJwtBuilder(subject, null, getUUID(), userType);
+        System.out.println("生成 JWT 的学号：" + subject);
         return builder.compact();
     }
 

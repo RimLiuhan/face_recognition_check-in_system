@@ -45,7 +45,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (userType == 1) {
             QueryWrapper<Students> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("id", id);
+            System.out.println("学生id是: " + id);
             Students students = studentsMapper.selectOne(queryWrapper);
+            System.out.println("学生信息是: " + students);
             if (students == null) {
                 throw new RuntimeException("用户不存在");
             }
